@@ -1,14 +1,14 @@
 import express from "express";
 import bcrypt from 'bcryptjs';
 import prisma from "../prisma/prisma.js";
-import { generateAccessToken, generateRefreshToken, hashRefreshToken, hashPassword, StoreInsRefreshToken, verifyInsRefreshToken } from "../authHelpers.js";
+import { generateAccessToken, generateRefreshToken, hashPassword, StoreInsRefreshToken, verifyInsRefreshToken } from "../authHelpers.js";
 
 
 const insAuthRouter = express.Router();
 
 
 insAuthRouter.post('/signup',   async (req, res) => {
-    console.log(req.body);
+    console.log(req.body,  "inserting ");
     
 
     const {email, password, username} = req.body;
@@ -34,16 +34,18 @@ insAuthRouter.post('/signup',   async (req, res) => {
                 password: hashedPassword
             }
         })
-
-        const accessToken = generateAccessToken(user.id);
-        const refreshToken =generateRefreshToken(user.id);
+        if(user)
+        {
+            const accessToken = generateAccessToken(user.id);
+            const refreshToken =generateRefreshToken(user.id);
+           
+            await StoreInsRefreshToken(user.id, refreshToken);
+            return res.json({accessToken,  refreshToken , role:'Ins'});
+        }
+        else{
+            return res.status(400).json({message: "Issue creating new User"})
+        }
        
-        await StoreInsRefreshToken(user.id, refreshToken);
-        res.json({accessToken,  refreshToken , role:'Ins'});
-
-
-
-
     }
     catch(error)
     {
