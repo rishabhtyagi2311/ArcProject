@@ -2,9 +2,10 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import {InsAuth, StudAuth} from '../../services/authServices';
 import { useNavigate } from 'react-router-dom';
-
+import { useSetRecoilState } from 'recoil';
+import { loginState } from '../../Atoms/atoms';
 function Signin() {
-
+  const setLoggedState = useSetRecoilState(loginState)
   const navigate = useNavigate();
   const {
     register: registerInstructor,
@@ -21,8 +22,11 @@ function Signin() {
   const onInsSubmit = async (data) =>{
   
         const response = await InsAuth.login(data) 
-
+        
         console.log(response);
+        localStorage.setItem("accessToken" , response.accessToken)
+        localStorage.setItem("refreshToken", response.refreshToken)
+        setLoggedState(true);
         navigate('../InsDashboard');
    
     }
@@ -32,6 +36,9 @@ function Signin() {
     const response = await StudAuth.login(data) 
 
     console.log(response);
+    localStorage.setItem("accessToken" , response.accessToken)
+    localStorage.setItem("refreshToken", response.refreshToken)
+    setLoggedState(true);
    navigate('../StudDashboard')
    
   }

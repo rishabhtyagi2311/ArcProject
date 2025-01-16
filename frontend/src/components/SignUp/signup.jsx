@@ -2,16 +2,18 @@ import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {InsAuth, StudAuth} from '../../services/authServices';
+import { useSetRecoilState } from 'recoil';
+import { loginState } from '../../Atoms/atoms';
 
 
-function Signup(profile) {
+function Signup() {
 
     const location = useLocation(); // Get the current location (route path)
     const isInstructor = location.pathname.includes('ins');
     const isStudent = location.pathname.includes('stud');
    
     const navigate = useNavigate()
-    
+     const setLoggedState = useSetRecoilState(loginState)
 
     const  {
       register,
@@ -26,15 +28,20 @@ function Signup(profile) {
         if(isInstructor)
         {
             const response = await InsAuth.SignUp(data) 
+            localStorage.setItem("accessToken" , response.accessToken)
+            localStorage.setItem("refreshToken", response.refreshToken)
+            setLoggedState(true);
 
-            console.log(response);
             navigate("/InsDashboard")
          
         }
         if(isStudent)
         {
           const response = await StudAuth.SignUp(data)
-          console.log(response);
+          localStorage.setItem("accessToken" , response.accessToken)
+          localStorage.setItem("refreshToken", response.refreshToken)
+          setLoggedState(true);
+        
           navigate("/StudDashboard")
           
         }
