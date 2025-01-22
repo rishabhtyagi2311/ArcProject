@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import {InsAuth, StudAuth} from '../../services/authServices';
 import { useSetRecoilState } from 'recoil';
 import { loginState } from '../../Atoms/atoms';
+import { UserAuthDetails } from '../../Atoms/atoms';
 
 
 function Signup() {
@@ -13,8 +14,8 @@ function Signup() {
     const isStudent = location.pathname.includes('stud');
    
     const navigate = useNavigate()
-     const setLoggedState = useSetRecoilState(loginState)
-
+    const setLoggedState = useSetRecoilState(loginState)
+    const setAuthDetails = useSetRecoilState(UserAuthDetails)
     const  {
       register,
       handleSubmit,
@@ -31,6 +32,10 @@ function Signup() {
             localStorage.setItem("accessToken" , response.accessToken)
             localStorage.setItem("refreshToken", response.refreshToken)
             setLoggedState(true);
+            setAuthDetails({
+              role : response.role,
+              userID : response.id
+            })
 
             navigate("/InsDashboard")
          
@@ -114,7 +119,7 @@ function Signup() {
                         minLength: { value: 3, message: "Username must be at least 3 characters long" },
                       })}
                     />
-                    {/* Error Messages for Username */}
+                   
                     <span className="block text-red-700 pl-6">
                       {errors.username?.message}
                     </span>

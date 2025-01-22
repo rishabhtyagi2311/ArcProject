@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import insAuthRouter from "./routes/InsAuth.js";
 import studRouter from "./routes/StudAuth.js";
 import cors from "cors";
+import insActionRouter from "./routes/insActions.js";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 
 app.use('/insAuth', insAuthRouter)
 app.use('/studAuth', studRouter)
+app.use('/insActions',insActionRouter)
 
 
 const port = process.env.PORT ;

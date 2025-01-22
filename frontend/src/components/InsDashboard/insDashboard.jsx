@@ -40,7 +40,7 @@ function InsDashboard() {
          </div>
  
  
-         <div className = 'flex flex-row'>
+         <div className = 'flex flex-row h-full overflow-y-hidden'>
            
            <div className={`w-52 h-96 bg-blue-950 rounded-md ml-2 ${ hbMenu ? "flex" : "hidden" } flex-col items-start `} >
                <div className='mt-6 text-white font-semibold font-serif w-44 ml-6 shadow-xl'>

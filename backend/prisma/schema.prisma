@@ -24,6 +24,7 @@ model user_Instructor {
   password      String
   username      String                 @unique
   refreshTokens refreshToken_Instructor[] 
+  courseRooms  CourseRoom[]
 }
 
 model refreshToken_Instructor {
@@ -51,4 +52,17 @@ model refreshToken_User {
   createdAt  DateTime @default(now())
   expiresAt  DateTime
   user       user_Student @relation(fields: [userId], references: [id])  
+}
+
+
+model CourseRoom {
+  id        Int       @id @default(autoincrement())
+  name      String
+  code      String    @unique 
+  createdAt DateTime  @default(now())
+  members   Int
+  creatorId Int
+  creator   user_Instructor      @relation(fields: [creatorId], references: [id])
+
+ 
 }
