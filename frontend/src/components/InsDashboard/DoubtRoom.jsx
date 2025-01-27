@@ -11,7 +11,7 @@ import { Editor } from '@tinymce/tinymce-react';
 
 function DoubtRoom() {
   const [content, setContent] = useState('');
-
+  const api_key = import.meta.env.TINY_API
   const handleEditorChange = (content, editor) => {
     console.log('Content:', content);
     setContent(content);
@@ -83,7 +83,7 @@ function sendMsg() {
       </button>
       
       <Editor
-        apiKey="69vkkz3yw0et1cmvfknnbxkbg7u73aj1a1eduzmhhb0s31yn" 
+        apiKey= {api_key}
         
         init={{
           height: 200,
