@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 import {InsAuth, StudAuth} from '../../services/authServices';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { loginState } from '../../Atoms/atoms';
+import { loginState,UserAuthDetails} from '../../Atoms/atoms';
 function Signin() {
   const setLoggedState = useSetRecoilState(loginState)
+  const setAuthDetails = useSetRecoilState(UserAuthDetails)
   const navigate = useNavigate();
   const {
     register: registerInstructor,
@@ -27,6 +28,11 @@ function Signin() {
         localStorage.setItem("accessToken" , response.accessToken)
         localStorage.setItem("refreshToken", response.refreshToken)
         setLoggedState(true);
+        setAuthDetails({
+          role: response.role,
+          userID  : response.id,
+          username : response.username
+        })
         navigate('../InsDashboard');
    
     }

@@ -40,7 +40,7 @@ insAuthRouter.post('/signup',   async (req, res) => {
             const refreshToken =generateRefreshToken(user.id);
            
             await StoreInsRefreshToken(user.id, refreshToken);
-            return res.json({accessToken,  refreshToken , role:'Ins', id : user.id});
+            return res.json({accessToken,  refreshToken , role:'Ins', id : user.id, username: user.username});
         }
         else{
             return res.status(400).json({message: "Issue creating new User"})
@@ -83,7 +83,7 @@ insAuthRouter.post('/login',  async (req, res) =>{
 
         await StoreInsRefreshToken(user.id, refreshToken);
 
-        res.json({accessToken, refreshToken, role : 'Ins'});
+        res.json({accessToken, refreshToken, role : 'Ins', id: user.id, username: user.username});
 
     }
     catch(error)

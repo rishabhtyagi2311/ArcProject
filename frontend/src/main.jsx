@@ -14,6 +14,8 @@ import { RecoilRoot } from 'recoil'
 import CreateRoom from './components/InsDashboard/CreateRoom.jsx' 
 import ViewRooms from './components/InsDashboard/ViewRooms.jsx'
 import AccountDetails from './components/InsDashboard/AccountDetails.jsx'
+import DoubtRoom from './components/InsDashboard/DoubtRoom.jsx'
+import ProtectedRoute from './components/Protector/RouteProtector.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,20 +24,27 @@ const router = createBrowserRouter(
         <Route path = 'signin' element = {<Signin/>}></Route>
         <Route path = 'signup/ins' element = {<Signup/>}></Route>
         <Route path = 'signup/stud' element = {<Signup/>}></Route>
+        
+       
+        <Route element = {<ProtectedRoute></ProtectedRoute>}>
         <Route path = 'insDashboard' element = {<InsDashboard/>}>
           <Route path = 'createroom' element= {<CreateRoom/>}></Route>
           <Route path = 'viewrooms' element= {<ViewRooms/>}></Route>
           <Route path = 'details' element= {<AccountDetails/>}></Route>
+          <Route path = 'doubts' element = {<DoubtRoom/>}></Route>
         </Route>
-        <Route path = 'studDashboard' element = {<StudDashboard/>}></Route>
+          <Route path = 'studDashboard' element = {<StudDashboard/>}></Route>
+        </Route>
+       
     </Route>
   )
 
 )
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+
     <RecoilRoot>
+    
     <RouterProvider router = {router}></RouterProvider>
     </RecoilRoot>
-  </StrictMode>,
+
 )

@@ -34,7 +34,8 @@ function Signup() {
             setLoggedState(true);
             setAuthDetails({
               role : response.role,
-              userID : response.id
+              userID : response.id,
+              username : response.username
             })
 
             navigate("/InsDashboard")

@@ -9,7 +9,7 @@ class InsActionsService
     {   
         console.log(data);
         
-        const id = data.userID?  data.userID : 11; 
+        const id = data.userId
         try{
 
             const response = await axios.post("http://localhost:4000/insActions/createRoom", 
@@ -19,6 +19,8 @@ class InsActionsService
                     userId: id
                 }
             )
+            console.log(response.data, "the backend reply ");
+            
             return response.data
         }
         catch(error)
@@ -27,28 +29,32 @@ class InsActionsService
         }
 
     }
-    async fetchRooms()
+    async fetchRooms(userDetails)
     {
-        const userDetails = useRecoilValue(UserAuthDetails)
-        const id = userDetails.userID 
+        const id =    userDetails.userID   
+        console.log(userDetails);
+        
         try{
             
             const response = await  axios.get("http://localhost:4000/insActions/rooms" , 
                 {
-                    userId: id
+                    params : { param1 : id}
                 }
             )
-            if(response)
+          
+            if(response.data.message === "No rooms found for this user")
             {
-                return response.data
+                return []
             }
-            return "error fetching rooms"
+            console.log(response.data);
+            
+            return response.data
         }
         catch(error)
         {   
             console.log(error);
             
-            return error
+            return []
 
         }
     }

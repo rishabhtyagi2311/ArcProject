@@ -36,30 +36,34 @@ insActionRouter.post('/createRoom', async (req, res) => {
 });
 
 
-insActionRouter.get('/rooms' , async (req, res) =>{
-
-  const {userId}  = req.body
-
-  try{
-    const rooms = await prisma.courseRoom.findMany({
-      where  : 
-        {
-          creatorId:userId }
-    })
-    if(rooms)
-    {
-      return res.json(rooms)
-    }
-    return  res.status(404).json({ message: 'No rooms found for this user' });
-
-
-  }
-  catch(error)
-  {
-    return res.status(500).json({message: "Error fetching rooms "})
-  }
-
-})
+insActionRouter.get('/rooms', async (req, res) => {
+  const userId = parseInt(req.query.param1, 10);
   
+  console.log("Received userId:", userId);
+  
+  if (!userId) {
+    return res.status(400).json({ message: "User ID is not found" });
+  }
+
+  try {
+    const rooms = await prisma.courseRoom.findMany({
+      where: {
+        creatorId: userId,
+      },
+    });
+
+    console.log("Fetched Rooms:", rooms);
+
+    if (rooms.length === 0) {
+      return res.status(200).json({ message: "No rooms found for this user" });
+    }
+
+    return res.json(rooms);
+  } catch (error) {
+    console.error("Error fetching rooms:", error);
+    return res.status(500).json({ message: "Error fetching rooms" });
+  }
+});
+
 
 export default insActionRouter
