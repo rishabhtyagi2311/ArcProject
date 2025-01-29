@@ -66,3 +66,14 @@ model CourseRoom {
 
  
 }
+
+model doubts{
+  id Int @id @default(autoincrement())
+  message  String
+  username String
+  createdAt DateTime @default(now())
+  voteCount Int @default(0)
+  roomId String
+  userId Int
+
+}

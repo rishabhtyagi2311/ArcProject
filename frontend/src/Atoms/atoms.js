@@ -25,7 +25,9 @@ export const CreatedRooms = atom({
 })
 export const selectedRoom  = atom({
     key : "selectedRoom",
-    default : ""
+    default : "",
+    effects_UNSTABLE: [persistAtom]
+
 
 })
 export const RoomNumber = atom({

@@ -7,8 +7,7 @@ import insAuthRouter from "./routes/InsAuth.js";
 import studRouter from "./routes/StudAuth.js";
 import cors from "cors";
 import insActionRouter from "./routes/insActions.js";
-import { log } from "console";
-
+import { createDoubt } from "./routes/commonActions.js";
 dotenv.config();
 
 const app = express()
@@ -55,11 +54,31 @@ io.on('connection' , (socket) => {
       }
   })
 
-  socket.on("new-message" , ({message , roomId}) => {
+  socket.on("new-message" , async ({message , roomId , username, userId}) => {
 
-    console.log(message);
+    try{
+      const newDoubt  = await  createDoubt({message,roomId, username, userId})  
+      if(newDoubt !== "Error")
+      { 
+        console.log(newDoubt);
+        
+        io.to(roomId).emit("new-message" , newDoubt)
+        
+      }
+      else
+      {
+        io.to(roomId).emit("error" , "Cannot create new doubt")
+      }
     
-    io.to(roomId).emit("new-message" , {message})
+    
+    }
+    catch(e)
+    {
+      console.log(e);
+      
+      io.to(roomId).emit("error" , "Cannot create new doubt")
+    }
+   
   })  
 
 

@@ -1,24 +1,24 @@
 import React from 'react'
 import { useEffect, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { selectedRoom, UserAuthDetails } from '../../Atoms/atoms';
+import { selectedRoom, UserAuthDetails } from '../../Atoms/atoms.js';
 import {getSocket} from '../../services/socket.js' ;
-import { Editor } from '@tinymce/tinymce-react';
-
 
 
 
 
 function DoubtRoom() {
-  const [content, setContent] = useState('');
-  const api_key = import.meta.env.TINY_API
-  const handleEditorChange = (content, editor) => {
-    console.log('Content:', content);
-    setContent(content);
-  };
-  const room = useRecoilValue(selectedRoom)
-  const [msg , setMsg] = useState()
+
+
+ 
+
+  const room = useRecoilValue(selectedRoom)                      
+  const [msg , setMsg] = useState('')
   const [messages, setMessage] = useState([])
+  const handleEditorChange = (value) => {
+ 
+    setMsg(value);
+  };
   const  socket = useMemo( () => 
     {
       const socket = getSocket()
@@ -27,6 +27,7 @@ function DoubtRoom() {
   const userDetails = useRecoilValue(UserAuthDetails)
  
 useEffect( () =>{
+
 
       socket.emit("ins-join-room" , {
         roomId: room,
@@ -42,6 +43,8 @@ useEffect( () =>{
 
       socket.on("new-message", (data) => {
         setMessage((prev) => [...prev, data]);
+        
+        
       });
 
 } , [])
@@ -49,59 +52,60 @@ useEffect( () =>{
 function sendMsg() {
   if (msg) {
     socket.emit("new-message", {
+      
       message: msg,
-      roomId: room
+      roomId: room,
+      username : userDetails.username,
+      userId : userDetails.userID,
+      
     });
     setMsg(""); 
   }
 }
   return (
-    <div>
 
-    {
-        messages && messages.length > 0 &&  
-        messages.map((item, index) => (
-          <div key={index}>{item.message}</div>
-        ))
+
+   
+      <div className= "w-full h-full bg-gray-200 flex flex-col rounded-md ml-2 mr-3 mb-4">
+
+        <div className= 'w-10/11 m-2 rounded-md overflow-y-scroll '>
+          {
+              messages && messages.length > 0 &&  
+              messages.map((item, index) => (
+              
+                <div key ={index} className = 'w-10/12 m-4 h-28 bg-blue-300'>
+
+
+                </div>
+                  
+
+              ))}
+        </div>
+
       
-    }
+        <div className = 'bg-slate-400 mt-auto flex flex-row justify-between items-center h-24 '>
+          <div className=' w-full ml-10'>
+            <input className = 'w-11/12 h-10 rounded-sm text-lg font-serif focus:outline-none p-2' 
+              placeholder="Put Your Doubt here "
+            onChange={(e) => handleEditorChange(e.target.value)
+              
+            }
+            
+            type="text" />
+          </div>
+          <div className='bg-blue-950 text-white font-serif font-semibold text-lg w-20 h-8 text-center mr-10 rounded-md'>
+            <button onClick={ () => {
+              sendMsg()
 
+              
+            }}>
+              Post
+            </button>
+          </div>
+         
 
-
-      <input
-        type="text"
-        value={msg || ""}
-        onChange={(e) => {
-          setMsg(e.target.value);
-        }}
-      />
-      <button onClick={ () => {
-            sendMsg()
-
-      }}>
-          send
-      </button>
-      
-      <Editor
-        apiKey= {api_key}
-        
-        init={{
-          height: 200,
-          menubar: false,
-          plugins: [
-            'advlist autolink lists link image charmap print preview anchor',
-            'searchreplace visualblocks code fullscreen',
-            'insertdatetime media table paste code help wordcount'
-          ],
-          toolbar:
-            'undo redo | formatselect | bold italic backcolor | \
-            alignleft aligncenter alignright alignjustify | \
-            bullist numlist outdent indent | removeformat | help'
-        }}
-        onEditorChange={handleEditorChange}
-      />
-    </div>
-  )
-}
+        </div>
+      </div>
+      )}
 
 export default DoubtRoom
