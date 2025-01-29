@@ -34,6 +34,10 @@ export const RoomNumber = atom({
     key : "RoomNumber" , 
     default: 0
 })
+export const doubts = atom({
+    key: "doubts",
+    default:[]
+})
 
 
 export const RoomFetchSelector = selector({

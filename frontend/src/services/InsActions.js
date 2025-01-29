@@ -2,8 +2,10 @@ import axios from "axios";
 import { UserAuthDetails } from "../Atoms/atoms";
 import { useRecoilValue } from "recoil";
 
+const url = import.meta.env.VITE_BACKEND_URL
 class InsActionsService 
 {
+    
 
     async createRoom(data)
     {   
@@ -12,7 +14,7 @@ class InsActionsService
         const id = data.userId
         try{
 
-            const response = await axios.post("http://localhost:4000/insActions/createRoom", 
+            const response = await axios.post(`${url}/insActions/createRoom`, 
                 {
                     name : data.roomName,
                     code : data.roomCode,
@@ -36,7 +38,7 @@ class InsActionsService
         
         try{
             
-            const response = await  axios.get("http://localhost:4000/insActions/rooms" , 
+            const response = await  axios.get(`${url}/insActions/rooms` , 
                 {
                     params : { param1 : id}
                 }

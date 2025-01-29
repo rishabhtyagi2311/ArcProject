@@ -7,7 +7,7 @@ import insAuthRouter from "./routes/InsAuth.js";
 import studRouter from "./routes/StudAuth.js";
 import cors from "cors";
 import insActionRouter from "./routes/insActions.js";
-import { createDoubt } from "./routes/commonActions.js";
+import { createDoubt, Actions } from "./routes/commonActions.js";
 dotenv.config();
 
 const app = express()
@@ -32,6 +32,7 @@ app.use(bodyParser.json());
 app.use('/insAuth', insAuthRouter)
 app.use('/studAuth', studRouter)
 app.use('/insActions',insActionRouter)
+app.use('/common',Actions)
 
 
 io.on('connection' , (socket) => {
