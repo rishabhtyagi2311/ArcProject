@@ -21,6 +21,37 @@ class CommonActionService
             return []
         }
 
+    
+    }
+
+
+    async updateVote(id, updateType)
+    { 
+        console.log(id, updateType);
+        
+        
+        try{
+            const result = await axios.post(`${url}/common/updateVoteCount` , 
+                {
+                    doubtId: id,
+                    updateType: updateType
+
+                }
+            )
+
+            if(result) {
+                console.log(result);
+                
+                return result.data
+            }
+                else return "error"
+        }
+        catch(e)
+        {
+            console.log(e);
+            return "error"
+            
+        }
     }
 }
 

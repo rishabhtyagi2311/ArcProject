@@ -17,7 +17,7 @@ function DoubtRoom() {
 
   const room = useRecoilValue(selectedRoom)                      
   const [msg , setMsg] = useState('')
-const [messages, setMessage]  = useState([])
+  const [messages, setMessage]  = useState([])
   const [loading, setLoading] = useState(true)
 
   const handleEditorChange = (value) => {
@@ -30,6 +30,19 @@ const [messages, setMessage]  = useState([])
       return socket.connect()
     },[])
   const userDetails = useRecoilValue(UserAuthDetails)
+    const [VoteChangeCounter , setVoteChangeCounter] = useState(0)
+
+  const VoteHandler = async(data) => {
+
+    console.log(data.id, data.updateType , "in handleer ");
+    
+    const response= await ActionService.updateVote(data.id, data.updateType)
+      if(response.success)
+      {
+         setVoteChangeCounter((prev) => prev+1)
+          
+      }
+    }
  
 useEffect( () =>{
   setLoading(true)
@@ -42,7 +55,7 @@ useEffect( () =>{
       if(isMounted)
       {
           setMessage(result.data)
-         console.log(messages , "here ");
+          socket.emit("voteUpdated" , (room))
          
           
       } 
@@ -80,7 +93,9 @@ useEffect( () =>{
         });
       });
      
-     
+     socket.on("voteUpdated" , (data) =>{
+        setMessage(data)
+     })
       
       
       
@@ -88,7 +103,7 @@ useEffect( () =>{
       isMounted = false;
     };
 
-} , [])
+} , [VoteChangeCounter])
 
 function sendMsg() {
   if (msg) {
@@ -141,10 +156,15 @@ function sendMsg() {
                   {item.message} 
                 </div>
                 <div className = 'ml-4 border-t border-black flex flex-row space-x-4 mt-2 p-4'>
-                    <button className="flex items-center space-x-1 text-slate-500 hover:text-sky-600 transition-colors duration-200">
+                    <button className="flex items-center space-x-1 text-slate-500 hover:text-sky-600 transition-colors duration-200" onClick={
+                      () => VoteHandler({id: item.id, updateType: "up"})
+                    } >
                         <ThumbsUp size={18} />
                     </button>
-                    <button className="flex items-center space-x-1 text-slate-500 hover:text-slate-700 transition-colors duration-200">
+                    <button className="flex items-center space-x-1 text-slate-500 hover:text-slate-700 transition-colors duration-200" onClick={
+                      () => VoteHandler({ id: item.id, updateType: "down" })
+                  }
+                      >
                       <ThumbsDown size={18} />
                     </button>
                     <span className="text-slate-600 font-medium">{item.voteCount} votes</span>

@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import insAuthRouter from "./routes/InsAuth.js";
 import studRouter from "./routes/StudAuth.js";
 import cors from "cors";
+import prisma from "./prisma/prisma.js";
 import insActionRouter from "./routes/insActions.js";
 import { createDoubt, Actions } from "./routes/commonActions.js";
 dotenv.config();
@@ -82,7 +83,21 @@ io.on('connection' , (socket) => {
    
   })  
 
+  socket.on("voteUpdated" , async(room) => {
 
+    const doubts = await prisma.doubts.findMany({
+        where:{ roomId : room},
+        orderBy: [
+          { voteCount: "desc" },
+          { createdAt: "desc" }
+        ],
+    })
+
+    if(doubts)
+    {
+      io.to(room).emit("voteUpdated", doubts)
+    }
+  })
   
 })
 

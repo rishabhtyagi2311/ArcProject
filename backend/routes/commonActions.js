@@ -48,3 +48,28 @@ Actions.get("/doubts/:roomId", async (req, res) => {
       res.status(500).json({ error: "Error fetching messages" });
     }
   });
+
+
+  Actions.post('/updateVoteCount' , async (req, res) => {
+    const {doubtId, updateType} = req.body
+    console.log(doubtId, updateType);
+    
+    try{
+
+      const updatedMessage = await prisma.doubts.update({
+        where: {id: doubtId},
+        data:{
+            voteCount: updateType === 'up'?{ increment : 1} : {decrement : 1} 
+        }
+      })
+      return res.json({success:true, updatedMessage})
+
+    }
+    catch(e)
+    {
+      console.log(e);
+      
+      return "Error updating votes"
+    }
+  }
+)
