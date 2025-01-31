@@ -1,6 +1,5 @@
 import axios from "axios";
-import { UserAuthDetails } from "../Atoms/atoms";
-import { useRecoilValue } from "recoil";
+
 
 const url = import.meta.env.VITE_BACKEND_URL
 class InsActionsService 

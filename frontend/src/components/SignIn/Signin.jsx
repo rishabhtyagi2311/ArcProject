@@ -45,7 +45,12 @@ function Signin() {
     localStorage.setItem("accessToken" , response.accessToken)
     localStorage.setItem("refreshToken", response.refreshToken)
     setLoggedState(true);
-   navigate('../StudDashboard')
+    setAuthDetails({
+      role: response.role,
+      userID  : response.id,
+      username : response.username
+    })
+    navigate('../StudDashboard')
    
   }
 return (

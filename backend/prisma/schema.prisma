@@ -67,6 +67,8 @@ model CourseRoom {
  
 }
 
+
+
 model doubts{
   id Int @id @default(autoincrement())
   message  String
@@ -76,4 +78,14 @@ model doubts{
   roomId String
   userId Int
 
+}
+
+
+model StudentCourses {
+  id        Int    @id @default(autoincrement())
+  StudentId Int   
+  roomName  String 
+  members   Int
+  creatorId Int
+  joinedAt  DateTime  @default(now())
 }

@@ -37,6 +37,8 @@ function Signup() {
               userID : response.id,
               username : response.username
             })
+            
+            
 
             navigate("/InsDashboard")
          
@@ -47,6 +49,12 @@ function Signup() {
           localStorage.setItem("accessToken" , response.accessToken)
           localStorage.setItem("refreshToken", response.refreshToken)
           setLoggedState(true);
+          setAuthDetails({
+            role : response.role,
+            userID : response.id,
+            username : response.username
+          })
+
         
           navigate("/StudDashboard")
           

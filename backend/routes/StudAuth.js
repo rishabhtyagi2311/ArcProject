@@ -36,7 +36,7 @@ studRouter.post('/signup', async (req, res) => {
         const accesstoken = generateAccessToken(user.id);
       
         await StoreStudRefreshToken(user.id , refreshToken);
-        return res.json({ accesstoken, refreshToken,role:'stud' , username: user.username})
+        return res.json({ accesstoken, refreshToken,role:'stud' , username: user.username , id:user.id})
 
 
     }
@@ -76,7 +76,7 @@ studRouter.post('/login' , async (req, res) => {
        
 
         await StoreStudRefreshToken(existUser.id, refreshToken)
-        return  res.json({accessToken,refreshToken, role:'stud', username: existUser.username })
+        return  res.json({accessToken,refreshToken, role:'stud', username: existUser.username, id:existUser.id})
         
     }
     catch(error)

@@ -1,5 +1,5 @@
 import {atom, selector} from 'recoil'
-import { InsActions } from '../services/InsActions';
+
 
 import { recoilPersist } from 'recoil-persist';
 const { persistAtom } = recoilPersist();
@@ -23,6 +23,11 @@ export const CreatedRooms = atom({
     default: []
 
 })
+export const joinedRooms = atom({
+    key : "joinedRooms",
+    default: []
+
+})
 export const selectedRoom  = atom({
     key : "selectedRoom",
     default : "",
@@ -40,18 +45,5 @@ export const doubts = atom({
 })
 
 
-export const RoomFetchSelector = selector({
-    key: "RoomFetchSelector",
-    get: async ({ get }) => {
-        try {
-            const response = await InsActions.fetchRooms();
-            console.log("RoomFetchSelector result:", response);
-            return Array.isArray(response) ? response : [];
-        } catch (error) {
-            console.error("Error in RoomFetchSelector:", error);
-            return [];
-        }
-    },
-});
 
 

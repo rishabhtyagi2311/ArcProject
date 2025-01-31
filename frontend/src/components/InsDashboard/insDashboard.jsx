@@ -4,18 +4,18 @@ function InsDashboard() {
  
    const [hbMenu, setHbMenu]  = useState(false)
    useEffect(() => {
-     // Function to check screen size
+
      const checkScreenSize = () => {
        setHbMenu(window.innerWidth > 768); 
      };
  
-     // Initial check
+
      checkScreenSize();
  
-     // Add event listener to handle resize
+     
      window.addEventListener("resize", checkScreenSize);
  
-     // Cleanup the event listener on component unmount
+
      return () => window.removeEventListener("resize", checkScreenSize);
          }, []);
  
@@ -54,11 +54,7 @@ function InsDashboard() {
                  </NavLink>
                </div>
               
-               <div className='mt-6 text-white font-semibold font-serif w-44 ml-6 shadow-xl'>
-                 <NavLink to = './details'>
-                   Account
-                 </NavLink>
-               </div>
+               
            </div>
 
            <Outlet/>

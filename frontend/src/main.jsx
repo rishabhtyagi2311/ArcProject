@@ -13,7 +13,8 @@ import StudDashboard from './components/StudDashboard/studDashboard.jsx'
 import { RecoilRoot } from 'recoil'
 import CreateRoom from './components/InsDashboard/CreateRoom.jsx' 
 import ViewRooms from './components/InsDashboard/ViewRooms.jsx'
-import AccountDetails from './components/InsDashboard/AccountDetails.jsx'
+import JoinRoom from './components/StudDashboard/JoinRoom.jsx'
+import JoinedRooms from './components/StudDashboard/JoinedRooms.jsx'
 import DoubtRoom from './components/InsDashboard/DoubtRoom.jsx'
 import ProtectedRouteIns from './components/Protector/RouteProtector.jsx'
 import ProtectedRouteStud from './components/Protector/RouterProtectorStud.jsx'
@@ -31,7 +32,7 @@ const router = createBrowserRouter(
           <Route path = 'insDashboard' element = {<InsDashboard/>}>
             <Route path = 'createroom' element= {<CreateRoom/>}></Route>
             <Route path = 'viewrooms' element= {<ViewRooms/>}></Route>
-            <Route path = 'details' element= {<AccountDetails/>}></Route>
+          
             <Route path = 'doubts' element = {<DoubtRoom/>}></Route>
           </Route>
 
@@ -42,7 +43,12 @@ const router = createBrowserRouter(
 
         <Route element = {<ProtectedRouteStud></ProtectedRouteStud>}>
         
-            <Route path = 'studDashboard' element = {<StudDashboard/>}></Route>
+            <Route path = 'studDashboard' element = {<StudDashboard/>}>
+            
+              <Route path = 'joinroom' element = {<JoinRoom/>}></Route>
+              <Route path = 'joinedrooms' element = {<JoinedRooms/>}></Route>
+            
+            </Route>
       
         </Route>
        

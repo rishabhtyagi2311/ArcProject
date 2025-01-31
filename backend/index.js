@@ -9,6 +9,7 @@ import cors from "cors";
 import prisma from "./prisma/prisma.js";
 import insActionRouter from "./routes/insActions.js";
 import { createDoubt, Actions } from "./routes/commonActions.js";
+import StudActionRouter from "./routes/studActions.js";
 dotenv.config();
 
 const app = express()
@@ -34,6 +35,7 @@ app.use('/insAuth', insAuthRouter)
 app.use('/studAuth', studRouter)
 app.use('/insActions',insActionRouter)
 app.use('/common',Actions)
+app.use('/studActions', StudActionRouter)
 
 
 io.on('connection' , (socket) => {
