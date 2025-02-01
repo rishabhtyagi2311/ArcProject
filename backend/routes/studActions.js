@@ -35,6 +35,13 @@ StudActionRouter.post('/joinroom' , async(req, res)  => {
 
             if(new_room)
             {
+
+                await prisma.courseRoom.update({
+                    where: {code: roomId},
+                    date:{
+                        members : {increment : 1}
+                    }
+                })
                 console.log(new_room);
                 
                 return res.status(200).json(new_room)

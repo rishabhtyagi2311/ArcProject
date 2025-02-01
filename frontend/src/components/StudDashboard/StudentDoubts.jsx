@@ -4,14 +4,11 @@ import { useRecoilValue ,useRecoilValueLoadable, useSetRecoilState} from 'recoil
 import { selectedRoom, UserAuthDetails,doubts } from '../../Atoms/atoms.js';
 import {getSocket} from '../../services/socket.js' ;
 import { format, set } from 'date-fns';
-import { ThumbsUp, ThumbsDown,Trash } from 'lucide-react';
+import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import {ActionService} from "../../services/common.js"
 
 
-
-
-function DoubtRoom() {
-
+function StudentDoubts() {
 
  
 
@@ -45,7 +42,6 @@ function DoubtRoom() {
     }
  
 useEffect( () =>{
-  setMessage([])
   setLoading(true)
   let isMounted  = true
 
@@ -156,34 +152,21 @@ function sendMsg() {
                 <div className= 'font-serif mt-4 ml-4 whitespace-pre-line mb-4 border-t border-black overflow-x-auto'>
                   {item.message} 
                 </div>
-                
-                <div className = ' ml-4 border-t border-black flex flex-row justify-between items-center'>
-                  <div className = 'ml-4   flex flex-row space-x-4 mt-2 p-4'>
-                      <button className="flex items-center space-x-1 text-slate-500 hover:text-sky-600 transition-colors duration-200" onClick={
-                        () => VoteHandler({id: item.id, updateType: "up"})
-                      } >
-                          <ThumbsUp size={18} />
-                      </button>
-                      <button className="flex items-center space-x-1 text-slate-500 hover:text-slate-700 transition-colors duration-200" onClick={
-                        () => VoteHandler({ id: item.id, updateType: "down" })
-                    }
-                        >
-                        <ThumbsDown size={18} />
-                      </button>
-                    
-                      <span className="text-slate-600 font-medium">{item.voteCount} votes</span>
-
-
-
-                  </div>
-
-                  <div className ='mr-4'>
-                    <button>
-                          <Trash size ={20}/>
+                <div className = 'ml-4 border-t border-black flex flex-row space-x-4 mt-2 p-4'>
+                    <button className="flex items-center space-x-1 text-slate-500 hover:text-sky-600 transition-colors duration-200" onClick={
+                      () => VoteHandler({id: item.id, updateType: "up"})
+                    } >
+                        <ThumbsUp size={18} />
                     </button>
-                  </div>
-               
+                    <button className="flex items-center space-x-1 text-slate-500 hover:text-slate-700 transition-colors duration-200" onClick={
+                      () => VoteHandler({ id: item.id, updateType: "down" })
+                  }
+                      >
+                      <ThumbsDown size={18} />
+                    </button>
+                    <span className="text-slate-600 font-medium">{item.voteCount} votes</span>
                 </div>
+               
                
 
               </div>
@@ -221,6 +204,7 @@ function sendMsg() {
 
         </div>
       </div>
-      )}
+      )
+}
 
-export default DoubtRoom
+export default StudentDoubts

@@ -50,7 +50,7 @@ function InsDashboard() {
                </div>
                <div className='mt-6 text-white font-semibold font-serif w-44 ml-6 shadow-xl'>
                  <NavLink to = './joinroom'>
-                   Create 
+                   Join 
                  </NavLink>
                </div>
               

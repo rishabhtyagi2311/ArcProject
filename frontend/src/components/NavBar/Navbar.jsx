@@ -1,19 +1,21 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { loginState } from '../../Atoms/atoms';
+import { useRecoilState,useRecoilValue} from 'recoil';
+import { loginState, UserAuthDetails} from '../../Atoms/atoms';
+import { User } from 'lucide-react';
 function Navbar() {
 
   const [loggedState, setLoggedState] = useRecoilState(loginState)
+  const details =useRecoilValue(UserAuthDetails)
 
 
   function handleClick()
   {
     if(loggedState)
     {
-        // localStorage.removeItem("accessToken")
+        localStorage.removeItem("accessToken")
 
-        // localStorage.removeItem("refreshToken")
+        localStorage.removeItem("refreshToken")
 
         console.log("token deleted");
 
@@ -41,7 +43,22 @@ function Navbar() {
       </div>
       <div className='flex flex-row justify-end w-full'>
           <ul className='flex flex-row' >
+
+            {loggedState && 
             <li>
+              <NavLink
+             className='text-2xl text-sky-950 font-serif font-bold  mx-4'
+             to= {details.role == 'Ins' ? "/insDashboard" : "/studDashboard"}
+             
+              >
+                Dashboard
+             </NavLink>
+            </li>
+            }
+
+            <li>
+            
+
              <NavLink
              className='text-2xl text-sky-950 font-serif font-bold  mx-4'
              to= {loggedState? "/" : "/signin"}

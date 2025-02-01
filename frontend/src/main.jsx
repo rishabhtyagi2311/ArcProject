@@ -16,6 +16,7 @@ import ViewRooms from './components/InsDashboard/ViewRooms.jsx'
 import JoinRoom from './components/StudDashboard/JoinRoom.jsx'
 import JoinedRooms from './components/StudDashboard/JoinedRooms.jsx'
 import DoubtRoom from './components/InsDashboard/DoubtRoom.jsx'
+import StudentDoubts from './components/StudDashboard/StudentDoubts.jsx'
 import ProtectedRouteIns from './components/Protector/RouteProtector.jsx'
 import ProtectedRouteStud from './components/Protector/RouterProtectorStud.jsx'
 
@@ -47,6 +48,7 @@ const router = createBrowserRouter(
             
               <Route path = 'joinroom' element = {<JoinRoom/>}></Route>
               <Route path = 'joinedrooms' element = {<JoinedRooms/>}></Route>
+              <Route path ='doubts' element = {<StudentDoubts></StudentDoubts>}></Route>
             
             </Route>
       
