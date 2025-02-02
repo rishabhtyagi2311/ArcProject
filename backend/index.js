@@ -10,6 +10,7 @@ import prisma from "./prisma/prisma.js";
 import insActionRouter from "./routes/insActions.js";
 import { createDoubt, Actions } from "./routes/commonActions.js";
 import StudActionRouter from "./routes/studActions.js";
+import { log } from "console";
 dotenv.config();
 
 const app = express()
@@ -99,6 +100,29 @@ io.on('connection' , (socket) => {
     {
       io.to(room).emit("voteUpdated", doubts)
     }
+  })
+
+  socket.on("deleteDoubt" , async (data)=> {
+      try{
+        console.log(data.id, data.room );
+        
+        const response = await prisma.doubts.delete({
+          where: {
+            id : data.id
+          }
+        })
+        if(response)
+        {
+          io.to(data.room).emit("doubtDeleted")
+        }
+
+
+      }
+      catch(e)
+      {
+        console.log(e);
+        
+      }
   })
   
 })

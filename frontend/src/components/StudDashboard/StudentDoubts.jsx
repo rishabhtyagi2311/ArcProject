@@ -4,7 +4,7 @@ import { useRecoilValue ,useRecoilValueLoadable, useSetRecoilState} from 'recoil
 import { selectedRoom, UserAuthDetails,doubts } from '../../Atoms/atoms.js';
 import {getSocket} from '../../services/socket.js' ;
 import { format, set } from 'date-fns';
-import { ThumbsUp, ThumbsDown } from 'lucide-react';
+import { ThumbsUp, ThumbsDown ,Trash} from 'lucide-react';
 import {ActionService} from "../../services/common.js"
 
 
@@ -27,7 +27,7 @@ function StudentDoubts() {
       return socket.connect()
     },[])
   const userDetails = useRecoilValue(UserAuthDetails)
-    const [VoteChangeCounter , setVoteChangeCounter] = useState(0)
+    const [VoteChangeCounter , setChangeCounter] = useState(0)
 
   const VoteHandler = async(data) => {
 
@@ -36,11 +36,17 @@ function StudentDoubts() {
     const response= await ActionService.updateVote(data.id, data.updateType)
       if(response.success)
       {
-         setVoteChangeCounter((prev) => prev+1)
+       
+         setChangeCounter((prev) => prev+1)
           
       }
     }
- 
+    function deleteDoubt(id)
+    {
+      socket.emit("deleteDoubt" , ({id, room}))
+      setChangeCounter((prev)=> prev+1)
+    }
+  
 useEffect( () =>{
   setLoading(true)
   let isMounted  = true
@@ -98,6 +104,9 @@ useEffect( () =>{
       
     return () => {
       isMounted = false;
+      socket.off("success-join");
+      socket.off("new-message");
+      socket.off("voteUpdated");
     };
 
 } , [VoteChangeCounter])
@@ -152,20 +161,34 @@ function sendMsg() {
                 <div className= 'font-serif mt-4 ml-4 whitespace-pre-line mb-4 border-t border-black overflow-x-auto'>
                   {item.message} 
                 </div>
-                <div className = 'ml-4 border-t border-black flex flex-row space-x-4 mt-2 p-4'>
-                    <button className="flex items-center space-x-1 text-slate-500 hover:text-sky-600 transition-colors duration-200" onClick={
-                      () => VoteHandler({id: item.id, updateType: "up"})
-                    } >
-                        <ThumbsUp size={18} />
+                <div className = ' ml-4 border-t border-black flex flex-row justify-between items-center'>
+                  <div className = 'ml-4   flex flex-row space-x-4 mt-2 p-4'>
+                      <button className="flex items-center space-x-1 text-slate-500 hover:text-sky-600 transition-colors duration-200" onClick={
+                        () => VoteHandler({id: item.id, updateType: "up"})
+                      } >
+                          <ThumbsUp size={18} />
+                      </button>
+                      <button className="flex items-center space-x-1 text-slate-500 hover:text-slate-700 transition-colors duration-200" onClick={
+                        () => VoteHandler({ id: item.id, updateType: "down" })
+                    }
+                        >
+                        <ThumbsDown size={18} />
+                      </button>
+                    
+                      <span className="text-slate-600 font-medium">{item.voteCount} votes</span>
+
+
+
+                  </div>
+
+                {item.username=== userDetails.username && <div className ='mr-4'>
+                    <button onClick={ () => deleteDoubt(item.id)}>
+                          <Trash size ={20}/>
                     </button>
-                    <button className="flex items-center space-x-1 text-slate-500 hover:text-slate-700 transition-colors duration-200" onClick={
-                      () => VoteHandler({ id: item.id, updateType: "down" })
-                  }
-                      >
-                      <ThumbsDown size={18} />
-                    </button>
-                    <span className="text-slate-600 font-medium">{item.voteCount} votes</span>
+                  </div>}
+               
                 </div>
+               
                
                
 

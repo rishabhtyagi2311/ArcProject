@@ -30,21 +30,44 @@ function DoubtRoom() {
       return socket.connect()
     },[])
   const userDetails = useRecoilValue(UserAuthDetails)
-    const [VoteChangeCounter , setVoteChangeCounter] = useState(0)
+    const [VoteChangeCounter , setChangeCounter] = useState(0)
 
   const VoteHandler = async(data) => {
 
-    console.log(data.id, data.updateType , "in handleer ");
+    
     
     const response= await ActionService.updateVote(data.id, data.updateType)
       if(response.success)
       {
-         setVoteChangeCounter((prev) => prev+1)
+        
+        setChangeCounter((prev) => prev+1)
+      
           
       }
     }
+
+  function sendMsg() {
+      if (msg) {
+        socket.emit("new-message", {
+          
+          message: msg,
+          roomId: room,
+          username : userDetails.username,
+          userId : userDetails.userID,
+          
+        });
+        setMsg(""); 
+      }
+  }
+  function deleteDoubt(id)
+  {
+    socket.emit("deleteDoubt" , ({id, room}))
+    setChangeCounter((prev)=> prev+1)
+  }
+
  
 useEffect( () =>{
+
   setMessage([])
   setLoading(true)
   let isMounted  = true
@@ -57,6 +80,7 @@ useEffect( () =>{
       {
           setMessage(result.data)
           socket.emit("voteUpdated" , (room))
+         
          
           
       } 
@@ -97,28 +121,22 @@ useEffect( () =>{
      socket.on("voteUpdated" , (data) =>{
         setMessage(data)
      })
+   
       
       
       
     return () => {
       isMounted = false;
+      socket.off("success-join");
+      socket.off("new-message");
+      socket.off("voteUpdated");
     };
 
 } , [VoteChangeCounter])
 
-function sendMsg() {
-  if (msg) {
-    socket.emit("new-message", {
-      
-      message: msg,
-      roomId: room,
-      username : userDetails.username,
-      userId : userDetails.userID,
-      
-    });
-    setMsg(""); 
-  }
-}
+
+
+
   return (
 
 
@@ -178,7 +196,7 @@ function sendMsg() {
                   </div>
 
                   <div className ='mr-4'>
-                    <button>
+                    <button onClick={ () => deleteDoubt(item.id)}>
                           <Trash size ={20}/>
                     </button>
                   </div>
