@@ -22,11 +22,19 @@ StudActionRouter.post('/joinroom' , async(req, res)  => {
         )
         if(existRoom)
         {
-
+            const alreadyJoin = await prisma.studentCourses.findFirst({
+                where: {roomName,
+                    StudentId : userId
+                }
+            })
+            if(alreadyJoin)
+            {
+                return res.status(400).json({message:"Already Joined this room"})
+            }
             const new_room = await prisma.studentCourses.create({
                 data: {
                         roomName,
-                        members : existRoom.members,
+                        members : existRoom.members + 1,
                         creatorId: existRoom.creatorId,
                         StudentId: userId
 
@@ -38,8 +46,15 @@ StudActionRouter.post('/joinroom' , async(req, res)  => {
 
                 await prisma.courseRoom.update({
                     where: {code: roomId},
-                    date:{
+                    data:{
                         members : {increment : 1}
+                    }
+                })
+
+                await prisma.studentCourses.updateMany({
+                    where : {roomName},
+                    data: {
+                        members : {increment:1}
                     }
                 })
                 console.log(new_room);

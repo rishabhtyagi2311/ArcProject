@@ -51,7 +51,7 @@ function JoinedRooms() {
 
   
   return (
-    <div className  = "w-full  ml-4 mr-4 mb-4 h-auto  bg-blue-950 rounded-md  overflow-y-scroll flex flex-col ">
+    <div className  = "w-full  ml-4 mr-4 mb-4 h-auto  bg-slate-300 rounded-md  overflow-y-scroll flex flex-col ">
 
   
 

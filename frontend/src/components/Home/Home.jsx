@@ -80,10 +80,6 @@ function Home()
                 </div>
             </div>
 
-      <div className='bg-white h-[35rem]  w-11/12 my-2 flex flex-row'>
-            container
-      </div>
-      
     </div>
   </>
   )
